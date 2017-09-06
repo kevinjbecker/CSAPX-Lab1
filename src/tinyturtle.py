@@ -13,28 +13,6 @@ import turtle  # forward, length, mainloop
 import sys     # argv
 
 
-def main() -> None:
-    """
-    The main function prompts user to enter a command, then simplifies it, and executes it
-
-    :return: None
-    """
-
-    # Get the side length from either the command line (if present), or by
-    # prompting the user
-    if len(sys.argv) == 2:
-        input_command = int(sys.argv[1])
-    else:
-        input_command = input('Welcome to TinyTurtle.\nPlease enter your TinyTurtle command: ')
-
-
-    simplified_cmds = simplify_cmds(input_command)
-    print('Expanded program: ' + simplified_cmds + '\nEvaluating...')
-    evaluate(simplified_cmds)
-    turtle.mainloop()
-    print('Turtle display window has closed, TinyTurtle system will now stop.')
-
-
 def evaluate(cmd: str) -> None:
     """
     This function evaluates the input TT commands
@@ -160,7 +138,41 @@ def expand_polygon(polygon_cmd: str)->str:
     number_of_sides = int(polygon_cmd[1])
     angle_size = int(180 - (((number_of_sides - 2) * 180) / number_of_sides))
     side_length = int(polygon_cmd[3:])
-    return expand_iterate('I' + str(number_of_sides) + ' F' + str(side_length) + ' L' + str(angle_size) + ' ') # no '@' is needed since the expand_iterate requires the @ sign to be removed
+    # str(angle_size).zfill(3) is so that if the angle is < 100 it gives proper angle size
+    # (not necessary since it works both ways, but for cleanliness of code it was included)
+    return expand_iterate('I' + str(number_of_sides) + ' F' + str(side_length) + ' L' + str(angle_size).zfill(
+        3) + ' ')  # no '@' is needed since the expand_iterate requires the @ sign to be removed
+
+
+def main() -> None:
+    """
+    The main function prompts user to enter a command, then simplifies it, and executes it
+
+    :return: None
+    """
+
+    try:
+        # Get the side length from either the command line (if present), or by
+        # prompting the user
+        if len(sys.argv) == 2:
+            input_command = int(sys.argv[1])
+        else:
+            input_command = input('Welcome to TinyTurtle.\nPlease enter your TinyTurtle command: ')
+        simplified_cmds = simplify_cmds(input_command)
+        print('Expanded program: ' + simplified_cmds + '\nEvaluating...')
+        evaluate(simplified_cmds)
+        turtle.mainloop()
+        print('Turtle display window has closed, TinyTurtle system will now stop.')
+    except KeyboardInterrupt:
+        print('User passed CTRL+C or CMD+D, terminating execution.')
+    except EOFError:
+        print('User passed CTRL+D or CMD+D, terminating execution.')
+
+    simplified_cmds = simplify_cmds(input_command)
+    print('Expanded program: ' + simplified_cmds + '\nEvaluating...')
+    evaluate(simplified_cmds)
+    turtle.mainloop()
+    print('Turtle display window has closed, TinyTurtle system will now terminate.')
 
 
 # only run this program if it is not being imported by another main module
