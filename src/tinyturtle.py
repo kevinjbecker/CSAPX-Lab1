@@ -4,8 +4,21 @@
 | CSAPX Lab 1: TinyTurtyle  |
 =============================
 
+A program that creates a simplified turtle interpreter, called TinyTurtle.
+
+If the program is run as:
+
+$ python3 tinyturtle.py #
+
+The side length is gotten from the command line.
+
+If the program is run as:
+
+$ python3 tinyturtle.py
+
+The side length is gotten from standard input.
+
 date: 09/03/2017
-description: A program that creates a simplified turtle interpreter, called TinyTurtle.
 author: Kevin Becker
 """
 
